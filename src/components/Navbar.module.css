@@ -72,16 +72,21 @@
 /* ── MOBILE MENU ── */
 .mobileMenu {
   position: fixed;
-  top: 62px; /* direkt under nav, USP-bar dold på mobil */
+  top: 62px;
   left: 0; right: 0;
+  bottom: 0;
   z-index: 290;
   background: var(--dark);
-  border-bottom: 2px solid var(--gold-border);
+  border-top: 1px solid var(--border);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.35s ease, padding 0.35s ease;
+  transition: max-height 0.35s ease;
 }
-.mobileMenuOpen { max-height: 600px; }
+.mobileMenuOpen {
+  max-height: calc(100vh - 62px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .mobileLinks { list-style: none; padding: 8px 20px 0; }
 .mobileLinks li { border-bottom: 1px solid var(--border); }
