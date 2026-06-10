@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LangProvider } from "@/lib/LangContext";
 
 export const metadata: Metadata = {
   title: "Stålco — Professionella Verktyg & Maskiner",
-  description: "Stålco levererar professionella verktyg, maskiner och industriutrustning. Auktoriserad återförsäljare av DeWalt, Milwaukee, Makita och Bosch.",
-  keywords: ["verktyg", "maskiner", "industriverktyg", "DeWalt", "Milwaukee", "Makita", "Bosch"],
-  openGraph: {
-    title: "Stålco — Professionella Verktyg & Maskiner",
-    description: "Proffsutrustning för proffs. Fri frakt, 30 dagars retur.",
-    siteName: "Stålco",
-    type: "website",
-  },
+  description: "Stålco levererar professionella verktyg och maskiner. Auktoriserad återförsäljare av DeWalt, Milwaukee, Makita och Bosch.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="sv">
-      <body>{children}</body>
+      <body><LangProvider>{children}</LangProvider></body>
     </html>
   );
 }
