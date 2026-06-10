@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLang } from "@/lib/LangContext";
 import { t } from "@/lib/translations";
 import styles from "./Navbar.module.css";
@@ -10,12 +10,22 @@ export default function Navbar() {
   const [cartCount, setCartCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  if (typeof window !== "undefined") {
+  useEffect(() => {
     (window as any).__stalco_addToCart = () => setCartCount(c => c + 1);
-  }
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   return (
     <>
+      {/* USP bar — dold på mobil */}
       <div className={styles.uspBar}>
         <div className={styles.uspInner}>
           {tr.usp.map((u, i) => <span key={i} className={styles.uspItem}>{u}</span>)}
@@ -38,26 +48,18 @@ export default function Navbar() {
             </button>
 
             <div className={styles.langSwitch}>
-              <button
-                className={`${styles.langBtn} ${lang === "sv" ? styles.langActive : ""}`}
-                onClick={() => setLang("sv")}
-                aria-label="Svenska"
-              >
-                SE
-              </button>
+              <button className={`${styles.langBtn} ${lang === "sv" ? styles.langActive : ""}`} onClick={() => setLang("sv")}>SE</button>
               <span className={styles.langDivider}>|</span>
-              <button
-                className={`${styles.langBtn} ${lang === "en" ? styles.langActive : ""}`}
-                onClick={() => setLang("en")}
-                aria-label="English"
-              >
-                EN
-              </button>
+              <button className={`${styles.langBtn} ${lang === "en" ? styles.langActive : ""}`} onClick={() => setLang("en")}>EN</button>
             </div>
 
             <a href="#kontakt" className={styles.ctaBtn}>{tr.nav.cta}</a>
 
-            <button className={styles.hamburger} onClick={() => setMenuOpen(o => !o)} aria-label="Meny">
+            <button
+              className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Meny"
+            >
               <span /><span /><span />
             </button>
           </div>
@@ -68,15 +70,29 @@ export default function Navbar() {
             {tr.mega.map(l => <a key={l} href="#produkter" className={styles.megaItem}>{l}</a>)}
           </div>
         </div>
-
-        {menuOpen && (
-          <div className={styles.mobileMenu}>
-            {tr.mega.map(l => <a key={l} href="#produkter" onClick={() => setMenuOpen(false)}>{l}</a>)}
-            <a href="#om-oss" onClick={() => setMenuOpen(false)}>{lang === "sv" ? "Om oss" : "About"}</a>
-            <a href="#kontakt" onClick={() => setMenuOpen(false)}>{lang === "sv" ? "Kontakt" : "Contact"}</a>
-          </div>
-        )}
       </nav>
+
+      {/* Mobile slide-down menu */}
+      <div className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}>
+        <ul className={styles.mobileLinks}>
+          {tr.mega.map(l => (
+            <li key={l}>
+              <a href="#produkter" onClick={() => setMenuOpen(false)}>{l}</a>
+            </li>
+          ))}
+          <li><a href="#om-oss" onClick={() => setMenuOpen(false)}>{lang === "sv" ? "Om oss" : "About"}</a></li>
+          <li><a href="#kontakt" onClick={() => setMenuOpen(false)}>{lang === "sv" ? "Kontakt" : "Contact"}</a></li>
+        </ul>
+
+        <div className={styles.mobileLang}>
+          <button className={`${styles.mobileLangBtn} ${lang === "sv" ? styles.mobileLangActive : ""}`} onClick={() => setLang("sv")}>🇸🇪 Svenska</button>
+          <button className={`${styles.mobileLangBtn} ${lang === "en" ? styles.mobileLangActive : ""}`} onClick={() => setLang("en")}>🇺🇸 English</button>
+        </div>
+
+        <a href="#kontakt" className={styles.mobileCtaBtn} onClick={() => setMenuOpen(false)}>{tr.nav.cta}</a>
+      </div>
+
+      {menuOpen && <div className={styles.backdrop} onClick={() => setMenuOpen(false)} />}
     </>
   );
 }
