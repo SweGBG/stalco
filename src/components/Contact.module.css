@@ -7,7 +7,8 @@
 
 .items { display: flex; flex-direction: column; gap: 20px; margin-bottom: 28px; }
 .item { display: flex; gap: 14px; align-items: center; }
-.itemIcon { width: 36px; height: 36px; background: var(--dark-3); border: 1px solid var(--border-2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.itemIcon { width: 36px; height: 36px; background: var(--dark-3); border: 1px solid var(--border-2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.25s var(--ease), background 0.25s var(--ease); }
+.item:hover .itemIcon { border-color: var(--gold-border); background: var(--gold-pale); }
 .itemIcon svg { width: 14px; height: 14px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .itemLabel { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 2px; }
 .itemVal { font-size: 13px; color: var(--text); font-weight: 500; transition: color 0.15s; }
@@ -20,18 +21,20 @@ a.itemVal:hover { color: var(--gold); }
 .field { margin-bottom: 16px; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 6px; }
-.input { width: 100%; background: var(--dark-3); border: 1px solid var(--border-2); padding: 10px 14px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 13px; transition: border-color 0.15s; resize: none; }
+.input { width: 100%; background: var(--dark-3); border: 1px solid var(--border-2); padding: 10px 14px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 13px; transition: border-color 0.2s var(--ease), box-shadow 0.25s var(--ease); resize: none; }
 .input::placeholder { color: var(--text-muted); }
-.input:focus { outline: none; border-color: var(--gold-border); }
+.input:focus { outline: none; border-color: var(--gold-border); box-shadow: 0 0 0 3px var(--gold-pale); }
 .textarea { min-height: 110px; }
 
-.submitBtn { width: 100%; background: var(--gold); border: none; padding: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark); display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.15s; margin-bottom: 10px; min-height: 48px; }
-.submitBtn:hover { background: var(--gold-light); }
-.submitBtn svg { width: 13px; height: 13px; stroke: var(--dark); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.submitBtn { width: 100%; background: var(--gold); border: none; padding: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark); display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s var(--ease), box-shadow 0.3s var(--ease); margin-bottom: 10px; min-height: 48px; }
+.submitBtn:hover { background: var(--gold-light); box-shadow: 0 10px 28px -8px var(--gold-glow); }
+.submitBtn svg { width: 13px; height: 13px; stroke: var(--dark); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s var(--ease); }
+.submitBtn:hover svg { transform: translate(3px, -3px); }
 .note { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); }
 
-.success { background: var(--dark-2); border: 1px solid var(--gold-border); padding: 60px 36px; text-align: center; }
-.successIcon { width: 52px; height: 52px; background: var(--gold); color: var(--dark); font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success { background: var(--dark-2); border: 1px solid var(--gold-border); padding: 60px 36px; text-align: center; animation: successIn 0.5s var(--ease); }
+@keyframes successIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+.successIcon { width: 52px; height: 52px; background: var(--gold); color: var(--dark); font-size: 22px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: goldPulse 2s var(--ease) infinite; }
 .success h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
 .success p { color: var(--text-dim); font-size: 13px; }
 

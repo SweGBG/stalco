@@ -10,8 +10,17 @@ export default function Brands() {
   return (
     <div className={`${styles.wrap} fade-in`}>
       <div className={styles.label}>{t[lang].brands.label}</div>
-      <div className={styles.track}>
-        {[...brands,...brands].map((b,i) => <span key={i} className={styles.brand}>{b}</span>)}
+      <div className={styles.marquee}>
+        <div className={styles.track}>
+          {[...brands, ...brands].map((b, i) => (
+            <span key={i} className={styles.brand}>{b}</span>
+          ))}
+        </div>
+        <div className={styles.track} aria-hidden="true">
+          {[...brands, ...brands].map((b, i) => (
+            <span key={`b-${i}`} className={styles.brand}>{b}</span>
+          ))}
+        </div>
       </div>
     </div>
   );

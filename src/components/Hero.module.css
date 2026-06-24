@@ -1,8 +1,21 @@
 .hero { display: grid; grid-template-columns: 1fr 320px; max-width: 1300px; margin: 0 auto; padding: 20px 32px 0; gap: 0; align-items: stretch; min-height: 500px; }
 
-.main { position: relative; overflow: hidden; min-height: 480px; }
-.main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.38); }
+.main { position: relative; overflow: hidden; min-height: 480px; --mx: 70%; --my: 40%; }
+.main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.38); transform: scale(1.06); animation: heroDrift 22s ease-in-out infinite alternate; }
+@keyframes heroDrift {
+  from { transform: scale(1.06) translate(0, 0); }
+  to   { transform: scale(1.12) translate(-1.5%, -1.5%); }
+}
 .overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(12,12,10,0.94) 0%, rgba(12,12,10,0.55) 65%, transparent 100%); }
+/* Mjuk guldspotlight som följer muspekaren */
+.spotlight {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(201,146,42,0.10), transparent 60%);
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+.main:hover .spotlight { opacity: 1; }
+@media (hover: none) { .spotlight { display: none; } }
+@media (prefers-reduced-motion: reduce) { .main img { animation: none; transform: scale(1.04); } }
 
 .content { position: relative; z-index: 2; padding: 52px 48px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
 .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 20px; }
@@ -11,8 +24,8 @@
 .sub { font-size: 14px; color: var(--text-dim); max-width: 380px; line-height: 1.65; margin-bottom: 32px; font-weight: 300; }
 
 .actions { display: flex; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; }
-.btnPrimary { background: var(--gold); color: var(--dark); border: none; padding: 13px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; transition: background 0.15s; display: inline-block; min-height: 46px; display: flex; align-items: center; }
-.btnPrimary:hover { background: var(--gold-light); }
+.btnPrimary { background: var(--gold); color: var(--dark); border: none; padding: 13px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; transition: background 0.2s var(--ease), box-shadow 0.3s var(--ease); display: inline-block; min-height: 46px; display: flex; align-items: center; box-shadow: 0 0 0 0 var(--gold-glow); }
+.btnPrimary:hover { background: var(--gold-light); box-shadow: 0 8px 30px -6px var(--gold-glow); }
 .btnOutline { background: transparent; color: var(--text-dim); border: 1px solid var(--border-2); padding: 12px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; transition: all 0.15s; display: inline-block; min-height: 46px; display: flex; align-items: center; }
 .btnOutline:hover { border-color: var(--gold-border); color: var(--text); }
 
@@ -25,8 +38,10 @@
 .side { display: flex; flex-direction: column; border-left: 1px solid var(--border); }
 .sideCard { position: relative; overflow: hidden; flex: 1; cursor: pointer; transition: opacity 0.15s; }
 .sideCard:first-child { border-bottom: 1px solid var(--border); }
-.sideCard:hover { opacity: 0.88; }
-.sideCard img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.45); }
+.sideCard img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.45); transition: transform 0.5s var(--ease), filter 0.4s var(--ease); }
+.sideCard:hover img { transform: scale(1.06); filter: brightness(0.6); }
+.sideCard::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--gold); transition: box-shadow 0.35s var(--ease); pointer-events: none; }
+.sideCard:hover::after { box-shadow: inset 0 -2px 0 0 var(--gold); }
 .sideOverlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(12,12,10,0.88) 100%); }
 .sideContent { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 20px; }
 .sideKicker { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }

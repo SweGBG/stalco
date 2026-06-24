@@ -1,6 +1,7 @@
 "use client";
 import { useLang } from "@/lib/LangContext";
 import { t } from "@/lib/translations";
+import CountUp from "./CountUp";
 import styles from "./About.module.css";
 
 const uspIcons = [
@@ -17,17 +18,17 @@ export default function About() {
     <section className={styles.section} id="om-oss">
       <div className={styles.inner}>
         <div className={styles.left}>
-          <div className={styles.eyebrow}>{tr.eyebrow}</div>
-          <h2 className={styles.title}>{tr.title1}<br /><span className={styles.gold}>{tr.title2}</span></h2>
-          <p className={styles.body}>{tr.body1}</p>
-          <p className={styles.body}>{tr.body2}</p>
-          <div className={styles.facts}>
-            <div className={styles.fact}><span className={styles.factNum}>{tr.stat1Num}</span><span className={styles.factLabel}>{tr.stat1Label}</span></div>
-            <div className={styles.fact}><span className={styles.factNum}>{tr.stat2Num}</span><span className={styles.factLabel}>{tr.stat2Label}</span></div>
-            <div className={styles.fact}><span className={styles.factNum}>{tr.stat3Num}</span><span className={styles.factLabel}>{tr.stat3Label}</span></div>
+          <div className={styles.eyebrow} data-reveal>{tr.eyebrow}</div>
+          <h2 className={styles.title} data-reveal style={{ ["--reveal-delay" as string]: "0.08s" }}>{tr.title1}<br /><span className={`${styles.gold} shimmer`}>{tr.title2}</span></h2>
+          <p className={styles.body} data-reveal style={{ ["--reveal-delay" as string]: "0.16s" }}>{tr.body1}</p>
+          <p className={styles.body} data-reveal style={{ ["--reveal-delay" as string]: "0.22s" }}>{tr.body2}</p>
+          <div className={styles.facts} data-reveal style={{ ["--reveal-delay" as string]: "0.3s" }}>
+            <div className={styles.fact}><span className={styles.factNum}><CountUp value={tr.stat1Num} /></span><span className={styles.factLabel}>{tr.stat1Label}</span></div>
+            <div className={styles.fact}><span className={styles.factNum}><CountUp value={tr.stat2Num} /></span><span className={styles.factLabel}>{tr.stat2Label}</span></div>
+            <div className={styles.fact}><span className={styles.factNum}><CountUp value={tr.stat3Num} /></span><span className={styles.factLabel}>{tr.stat3Label}</span></div>
           </div>
         </div>
-        <div className={styles.right}>
+        <div className={styles.right} data-reveal="right" style={{ ["--reveal-delay" as string]: "0.12s" }}>
           <div className={styles.imgWrap}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=800&q=80&fit=crop&crop=center" alt="Stålco verkstad" />
@@ -41,7 +42,7 @@ export default function About() {
       </div>
       <div className={styles.uspGrid}>
         {tr.usps.map((u, i) => (
-          <div key={u.label} className={styles.usp}>
+          <div key={u.label} className={styles.usp} data-reveal="scale" style={{ ["--reveal-delay" as string]: `${i * 0.08}s` }}>
             <div className={styles.uspIcon}>{uspIcons[i]}</div>
             <div><div className={styles.uspLabel}>{u.label}</div><div className={styles.uspDesc}>{u.desc}</div></div>
           </div>

@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { useLang } from "@/lib/LangContext";
 import { t } from "@/lib/translations";
+import SE from "country-flag-icons/react/3x2/SE";
+import GB from "country-flag-icons/react/3x2/GB";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
@@ -44,7 +46,7 @@ export default function Navbar() {
           <div className={styles.navIcons}>
             <button className={styles.navIcon} aria-label="Varukorg">
               <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
+              {cartCount > 0 && <span key={cartCount} className={styles.badge}>{cartCount}</span>}
             </button>
 
             <div className={styles.langSwitch}>
@@ -85,8 +87,8 @@ export default function Navbar() {
         </ul>
 
         <div className={styles.mobileLang}>
-          <button className={`${styles.mobileLangBtn} ${lang === "sv" ? styles.mobileLangActive : ""}`} onClick={() => setLang("sv")}>🇸🇪 Svenska</button>
-          <button className={`${styles.mobileLangBtn} ${lang === "en" ? styles.mobileLangActive : ""}`} onClick={() => setLang("en")}>🇺🇸 English</button>
+          <button className={`${styles.mobileLangBtn} ${lang === "sv" ? styles.mobileLangActive : ""}`} onClick={() => setLang("sv")}><SE className={styles.flag} /> Svenska</button>
+          <button className={`${styles.mobileLangBtn} ${lang === "en" ? styles.mobileLangActive : ""}`} onClick={() => setLang("en")}><GB className={styles.flag} /> English</button>
         </div>
 
         <a href="#kontakt" className={styles.mobileCtaBtn} onClick={() => setMenuOpen(false)}>{tr.nav.cta}</a>

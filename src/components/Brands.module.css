@@ -1,12 +1,40 @@
-.wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--dark-2); padding: 20px 32px; overflow: hidden; }
+.wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--dark-2); padding: 20px 0; overflow: hidden; }
 .label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); letter-spacing: 0.2em; text-align: center; margin-bottom: 16px; }
-.track { display: flex; gap: 0; align-items: center; justify-content: center; flex-wrap: wrap; overflow-x: auto; scrollbar-width: none; }
-.track::-webkit-scrollbar { display: none; }
-.brand { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding: 8px 20px; border-right: 1px solid var(--border); transition: color 0.15s; white-space: nowrap; }
+
+/* Oändligt rullande band med mjuk fade i kanterna */
+.marquee {
+  display: flex;
+  width: max-content;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  animation: brandScroll 38s linear infinite;
+}
+.marquee:hover .track { animation-play-state: paused; }
+@keyframes brandScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+.brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-muted); padding: 8px 28px;
+  white-space: nowrap;
+  transition: color 0.2s var(--ease);
+}
 .brand:hover { color: var(--gold); }
-.brand:last-child { border-right: none; }
 
 @media (max-width: 768px) {
-  .wrap { padding: 16px 20px; }
-  .brand { font-size: 13px; padding: 6px 14px; }
+  .brand { font-size: 13px; padding: 6px 18px; }
+  .track { animation-duration: 26s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track { animation: none; }
+  .marquee { flex-wrap: wrap; justify-content: center; width: 100%; mask-image: none; -webkit-mask-image: none; }
+  .track:nth-child(2) { display: none; }
 }

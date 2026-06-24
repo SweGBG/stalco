@@ -8,7 +8,7 @@ export default function Footer() {
   const tr = t[lang].footer;
   return (
     <footer className={styles.footer}>
-      <div className={styles.top}>
+      <div className={`${styles.top} fade-in`}>
         <div className={styles.brand}>
           <div className={styles.logo}>STÅL<span>CO</span></div>
           <p className={styles.desc}>{tr.desc}</p>

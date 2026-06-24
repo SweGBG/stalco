@@ -14,10 +14,10 @@ export default function Contact() {
     <section className={styles.section} id="kontakt">
       <div className={styles.inner}>
         <div className={styles.left}>
-          <div className={styles.eyebrow}>{tr.eyebrow}</div>
-          <h2 className={styles.title}>{tr.title1}<br /><span className={styles.gold}>{tr.title2}</span></h2>
-          <p className={styles.sub}>{tr.sub}</p>
-          <div className={styles.items}>
+          <div className={styles.eyebrow} data-reveal>{tr.eyebrow}</div>
+          <h2 className={styles.title} data-reveal style={{ ["--reveal-delay" as string]: "0.08s" }}>{tr.title1}<br /><span className={`${styles.gold} shimmer`}>{tr.title2}</span></h2>
+          <p className={styles.sub} data-reveal style={{ ["--reveal-delay" as string]: "0.16s" }}>{tr.sub}</p>
+          <div className={styles.items} data-reveal style={{ ["--reveal-delay" as string]: "0.22s" }}>
             {[
               { label: tr.phone, val: "08-123 456 78", href: "tel:+4681234567" },
               { label: tr.email, val: "info@stalco.se", href: "mailto:info@stalco.se" },
@@ -37,7 +37,7 @@ export default function Contact() {
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.8!2d18.0646!3d59.3326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f9d5f0a14f2c5%3A0x1!2sIndustrivägen%2C+Stockholm!5e0!3m2!1ssv!2sse!4v1" width="100%" height="200" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Stålco karta" />
           </div>
         </div>
-        <div className={styles.right}>
+        <div className={styles.right} data-reveal="scale" style={{ ["--reveal-delay" as string]: "0.12s" }}>
           {sent ? (
             <div className={styles.success}>
               <div className={styles.successIcon}>✓</div>

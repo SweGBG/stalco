@@ -44,7 +44,8 @@
 .navIcon:hover { border-color: var(--gold-border); }
 .navIcon svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
-.badge { position: absolute; top: -5px; right: -5px; background: var(--gold); color: var(--dark); font-size: 9px; font-weight: 700; font-family: 'JetBrains Mono', monospace; width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.badge { position: absolute; top: -5px; right: -5px; background: var(--gold); color: var(--dark); font-size: 9px; font-weight: 700; font-family: 'JetBrains Mono', monospace; width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: badgePop 0.35s var(--ease); }
+@keyframes badgePop { 0% { transform: scale(0); } 60% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
 .langSwitch { display: flex; align-items: center; background: var(--gold); overflow: hidden; height: 38px; }
 .langBtn { background: transparent; border: none; padding: 0 11px; height: 100%; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; color: var(--dark); cursor: pointer; transition: background 0.15s; }
@@ -52,8 +53,8 @@
 .langActive { background: rgba(0,0,0,0.2); }
 .langDivider { color: rgba(0,0,0,0.3); font-size: 12px; user-select: none; line-height: 1; }
 
-.ctaBtn { background: var(--gold); color: var(--dark); border: none; padding: 10px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; transition: background 0.15s; white-space: nowrap; cursor: pointer; }
-.ctaBtn:hover { background: var(--gold-light); }
+.ctaBtn { background: var(--gold); color: var(--dark); border: none; padding: 10px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; transition: background 0.2s var(--ease), box-shadow 0.3s var(--ease); white-space: nowrap; cursor: pointer; }
+.ctaBtn:hover { background: var(--gold-light); box-shadow: 0 6px 20px -6px var(--gold-glow); }
 
 /* Hamburger */
 .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: transparent; border: none; padding: 6px; cursor: pointer; flex-shrink: 0; width: 36px; height: 36px; }
@@ -65,9 +66,12 @@
 /* Desktop mega bar */
 .megaBar { background: var(--dark-2); border-bottom: 1px solid var(--border); overflow-x: auto; }
 .megaInner { display: flex; align-items: center; max-width: 1300px; margin: 0 auto; padding: 0 32px; }
-.megaItem { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); padding: 11px 18px; border-right: 1px solid var(--border); white-space: nowrap; transition: color 0.15s; flex-shrink: 0; }
+.megaItem { position: relative; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); padding: 11px 18px; border-right: 1px solid var(--border); white-space: nowrap; transition: color 0.2s var(--ease); flex-shrink: 0; }
 .megaItem:first-child { padding-left: 0; }
+.megaItem::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 6px; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease); }
+.megaItem:first-child::after { left: 0; }
 .megaItem:hover { color: var(--text); }
+.megaItem:hover::after { transform: scaleX(1); }
 
 /* ── MOBILE MENU ── */
 .mobileMenu {
@@ -106,6 +110,10 @@
 .mobileLang { display: flex; gap: 10px; padding: 20px 20px 0; }
 .mobileLangBtn {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
   background: var(--dark-3);
   border: 1px solid var(--border-2);
   padding: 13px;
@@ -117,6 +125,7 @@
   cursor: pointer;
   transition: all 0.15s;
 }
+.flag { width: 20px; height: auto; border-radius: 2px; flex-shrink: 0; }
 .mobileLangActive { background: var(--gold-pale); border-color: var(--gold-border); color: var(--gold); }
 
 .mobileCtaBtn {
