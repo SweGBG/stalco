@@ -10,7 +10,8 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`${styles.top} fade-in`}>
         <div className={styles.brand}>
-          <div className={styles.logo}>STÅL<span>CO</span></div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-dark.png" alt="Stålco" className={styles.logo} />
           <p className={styles.desc}>{tr.desc}</p>
           <div className={styles.newsletter}>
             <input type="email" className={styles.input} placeholder={tr.placeholder} />

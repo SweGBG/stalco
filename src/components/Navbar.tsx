@@ -36,7 +36,10 @@ export default function Navbar() {
 
       <nav className={styles.nav}>
         <div className={styles.navTop}>
-          <a href="#" className={styles.logo}>STÅL<span>CO</span></a>
+          <a href="#" className={styles.logo} aria-label="Stålco">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-nav.png" alt="Stålco — Proffsutrustning, Stål & Kvalitet" />
+          </a>
 
           <div className={styles.search}>
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
