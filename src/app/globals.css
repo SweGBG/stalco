@@ -28,11 +28,17 @@
 
 html { scroll-behavior: smooth; }
 
+html {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: 'Barlow', sans-serif;
   background: var(--dark);
   color: var(--text);
   overflow-x: hidden;
+  max-width: 100%;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   position: relative;

@@ -19,7 +19,7 @@
 
 .content { position: relative; z-index: 2; padding: 52px 48px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
 .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 20px; }
-.title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(48px, 6.5vw, 82px); font-weight: 900; line-height: 0.92; letter-spacing: -0.01em; text-transform: uppercase; margin-bottom: 20px; }
+.title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(48px, 6.5vw, 82px); font-weight: 900; line-height: 0.92; letter-spacing: -0.01em; text-transform: uppercase; margin-bottom: 20px; overflow-wrap: break-word; max-width: 100%; }
 .gold { color: var(--gold); }
 .sub { font-size: 14px; color: var(--text-dim); max-width: 380px; line-height: 1.65; margin-bottom: 32px; font-weight: 300; }
 
@@ -29,8 +29,9 @@
 .btnOutline { background: transparent; color: var(--text-dim); border: 1px solid var(--border-2); padding: 12px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; transition: all 0.15s; display: inline-block; min-height: 46px; display: flex; align-items: center; }
 .btnOutline:hover { border-color: var(--gold-border); color: var(--text); }
 
-.stats { display: flex; gap: 0; border-top: 1px solid var(--border); padding-top: 20px; }
+.stats { display: flex; gap: 0; border-top: 1px solid var(--border); padding-top: 20px; flex-wrap: wrap; max-width: 100%; }
 .stat { padding-right: 24px; margin-right: 24px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 3px; }
+.stat:last-child { margin-right: 0; padding-right: 0; border-right: none; }
 .stat:last-child { border-right: none; }
 .statNum { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; line-height: 1; }
 .statLabel { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; font-family: 'JetBrains Mono', monospace; }

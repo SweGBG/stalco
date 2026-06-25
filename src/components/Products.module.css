@@ -103,8 +103,12 @@
   .header { flex-direction: column; align-items: flex-start; gap: 8px; }
   .title { font-size: 22px; }
   .filtersWrap { width: 100%; }
-  .filters { width: 100%; flex-wrap: nowrap; scroll-snap-type: x proximity; }
-  .filter { scroll-snap-align: start; }
+  /* Stapla kategorierna istället för att scrolla — alla syns i bild */
+  .filters { width: 100%; flex-wrap: wrap; overflow-x: visible; }
+  .filter { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; text-align: center; }
+  /* Inga scroll-indikatorer behövs när allt wrappar */
+  .filtersWrap::before, .filtersWrap::after { display: none; }
+  .scrollHint { display: none; }
 }
 
 @media (max-width: 500px) {
