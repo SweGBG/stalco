@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useLang } from "@/lib/LangContext";
 import { t } from "@/lib/translations";
 import styles from "./Products.module.css";
@@ -18,6 +18,37 @@ export default function Products() {
   const tr = t[lang].products;
   const [activeIdx, setActiveIdx] = useState(0);
 
+  // Scroll-affordans för filterraden på mobil
+  const filtersRef = useRef<HTMLDivElement>(null);
+  const [scrollState, setScrollState] = useState({ atStart: true, atEnd: false, scrollable: false });
+
+  const updateScrollState = useCallback(() => {
+    const el = filtersRef.current;
+    if (!el) return;
+    const scrollable = el.scrollWidth > el.clientWidth + 2;
+    const atStart = el.scrollLeft <= 1;
+    const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
+    setScrollState({ atStart, atEnd, scrollable });
+  }, []);
+
+  useEffect(() => {
+    updateScrollState();
+    const el = filtersRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    return () => {
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [updateScrollState, lang]);
+
+  // Auto-scrolla aktiv pill till synligt läge när man väljer kategori
+  const handleSelect = (i: number, btn: HTMLButtonElement) => {
+    setActiveIdx(i);
+    btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  };
+
   const filtered = activeIdx === 0 ? products : products.filter(p => p.catIdx === activeIdx);
 
   return (
@@ -27,12 +58,35 @@ export default function Products() {
           <div className={styles.eyebrow}>{tr.eyebrow}</div>
           <h2 className={styles.title}>{tr.title}</h2>
         </div>
-        <a href="#" className={styles.seeAll} data-reveal>{tr.seeAll}</a>
+        <button
+          type="button"
+          className={styles.seeAll}
+          data-reveal
+          onClick={() => setActiveIdx(0)}
+        >
+          {tr.seeAll}
+        </button>
       </div>
-      <div className={styles.filters} data-reveal>
-        {tr.cats.map((c, i) => (
-          <button key={c} className={`${styles.filter} ${activeIdx === i ? styles.filterActive : ""}`} onClick={() => setActiveIdx(i)}>{c}</button>
-        ))}
+      <div
+        className={`${styles.filtersWrap} ${scrollState.scrollable && !scrollState.atStart ? styles.fadeLeft : ""} ${scrollState.scrollable && !scrollState.atEnd ? styles.fadeRight : ""}`}
+        data-reveal
+      >
+        <div className={styles.filters} ref={filtersRef}>
+          {tr.cats.map((c, i) => (
+            <button
+              key={c}
+              className={`${styles.filter} ${activeIdx === i ? styles.filterActive : ""}`}
+              onClick={(e) => handleSelect(i, e.currentTarget)}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+        {scrollState.scrollable && !scrollState.atEnd && (
+          <span className={styles.scrollHint} aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18" /></svg>
+          </span>
+        )}
       </div>
       <div className={styles.grid}>
         {filtered.map((p, idx) => (
