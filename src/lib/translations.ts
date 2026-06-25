@@ -26,6 +26,7 @@ export const t = {
       seeAll: "Se hela sortimentet →",
       cats: ["Alla","Elverktyg","Handverktyg","Maskiner","Mätinstrument","Skyddsutrustning"],
       outOfStock: "Tillfälligt slut",
+      empty: "Inga produkter i den här kategorin ännu.",
     },
     about: {
       eyebrow: "// Om Stålco",
@@ -99,6 +100,7 @@ export const t = {
       seeAll: "See full range →",
       cats: ["All","Power tools","Hand tools","Machinery","Measuring","Safety"],
       outOfStock: "Temporarily out of stock",
+      empty: "No products in this category yet.",
     },
     about: {
       eyebrow: "// About Stålco",
