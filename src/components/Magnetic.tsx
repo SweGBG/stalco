@@ -28,12 +28,19 @@ export default function Magnetic({
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Bara på riktiga muspekare — aldrig på touch (annars "hoppar" knappen vid tap på mobil)
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const r = el.getBoundingClientRect();
     const x = (e.clientX - (r.left + r.width / 2)) * strength;
     const y = (e.clientY - (r.top + r.height / 2)) * strength;
     el.style.transform = `translate(${x}px, ${y}px)`;
   };
   const onLeave = () => {
+    const el = ref.current;
+    if (el) el.style.transform = "translate(0, 0)";
+  };
+  // Säkerställ att inget translate ligger kvar om en touch ändå triggar något
+  const onTouchStart = () => {
     const el = ref.current;
     if (el) el.style.transform = "translate(0, 0)";
   };
@@ -45,6 +52,7 @@ export default function Magnetic({
       className={className}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
+      onTouchStart={onTouchStart}
       style={{ transition: "transform 0.35s var(--ease)" }}
       {...rest}
     >
