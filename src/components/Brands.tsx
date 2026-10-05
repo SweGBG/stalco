@@ -1,27 +1,21 @@
 "use client";
 import { useLang } from "@/lib/LangContext";
-import { t } from "@/lib/translations";
-import styles from "./Brands.module.css";
 
-const brands = ["DeWalt","Milwaukee","Makita","Bosch","Stanley","Hilti","Husqvarna"];
+const BRANDS = ["DeWalt", "Milwaukee", "Makita", "Bosch", "Hilti", "Stanley", "Bahco", "Knipex", "Hultafors", "Mitutoyo", "Stabila", "Snickers", "3M"];
 
 export default function Brands() {
-  const { lang } = useLang();
+  const { tr } = useLang();
+  const row = [...BRANDS, ...BRANDS];
   return (
-    <div className={`${styles.wrap} fade-in`}>
-      <div className={styles.label}>{t[lang].brands.label}</div>
-      <div className={styles.marquee}>
-        <div className={styles.track}>
-          {[...brands, ...brands].map((b, i) => (
-            <span key={i} className={styles.brand}>{b}</span>
-          ))}
-        </div>
-        <div className={styles.track} aria-hidden="true">
-          {[...brands, ...brands].map((b, i) => (
-            <span key={`b-${i}`} className={styles.brand}>{b}</span>
+    <section className="brands" aria-label={tr.brands.label} data-anim>
+      <div className="brands-band">
+        <p className="brands-label"><span>{tr.brands.label}</span></p>
+        <div className="brands-track">
+          {row.map((b, i) => (
+            <span key={i} className="brand-name">{b}<i aria-hidden="true">✦</i></span>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

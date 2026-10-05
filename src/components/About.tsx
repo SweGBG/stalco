@@ -1,52 +1,70 @@
 "use client";
 import { useLang } from "@/lib/LangContext";
-import { t } from "@/lib/translations";
 import CountUp from "./CountUp";
-import styles from "./About.module.css";
 
-const uspIcons = [
-  <svg key="1" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>,
-  <svg key="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>,
-  <svg key="3" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-  <svg key="4" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12"/></svg>,
+const ICONS = [
+  // lastbil
+  <path key="a" d="M2 6h11v10H2zM13 9h4l4 4v3h-8M6 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01" />,
+  // retur
+  <path key="b" d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" />,
+  // sköld
+  <path key="c" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5" />,
+  // skiftnyckel
+  <path key="d" d="M14.5 4.5a4.5 4.5 0 0 0-5.6 5.8L3 16.2 7.8 21l5.9-5.9a4.5 4.5 0 0 0 5.8-5.6l-2.8 2.8-3-.6-.6-3z" />,
 ];
 
 export default function About() {
-  const { lang } = useLang();
-  const tr = t[lang].about;
+  const { tr } = useLang();
+  const a = tr.about;
   return (
-    <section className={styles.section} id="om-oss">
-      <div className={styles.inner}>
-        <div className={styles.left}>
-          <div className={styles.eyebrow} data-reveal>{tr.eyebrow}</div>
-          <h2 className={styles.title} data-reveal style={{ ["--reveal-delay" as string]: "0.08s" }}>{tr.title1}<br /><span className={`${styles.gold} shimmer`}>{tr.title2}</span></h2>
-          <p className={styles.body} data-reveal style={{ ["--reveal-delay" as string]: "0.16s" }}>{tr.body1}</p>
-          <p className={styles.body} data-reveal style={{ ["--reveal-delay" as string]: "0.22s" }}>{tr.body2}</p>
-          <div className={styles.facts} data-reveal style={{ ["--reveal-delay" as string]: "0.3s" }}>
-            <div className={styles.fact}><span className={styles.factNum}><CountUp value={tr.stat1Num} /></span><span className={styles.factLabel}>{tr.stat1Label}</span></div>
-            <div className={styles.fact}><span className={styles.factNum}><CountUp value={tr.stat2Num} /></span><span className={styles.factLabel}>{tr.stat2Label}</span></div>
-            <div className={styles.fact}><span className={styles.factNum}><CountUp value={tr.stat3Num} /></span><span className={styles.factLabel}>{tr.stat3Label}</span></div>
-          </div>
+    <section className="about" id="om-oss">
+      <div className="wrap about-in">
+        <div className="about-copy" data-reveal>
+          <p className="kicker">{a.eyebrow}</p>
+          <h2 className="sec-title">
+            <span className="mat">{a.title[0]}</span>
+            <br />
+            <span className="mat mat-hot">{a.title[1]}</span>
+          </h2>
+          <p>{a.body1}</p>
+          <p>{a.body2}</p>
+          <dl className="about-stats">
+            {a.stats.map(([num, suf, label]) => (
+              <div key={label}>
+                <dt><CountUp to={Number(num)} suffix={suf} /></dt>
+                <dd>{label}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <div className={styles.right} data-reveal="right" style={{ ["--reveal-delay" as string]: "0.12s" }}>
-          <div className={styles.imgWrap}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=800&q=80&fit=crop&crop=center" alt="Stålco verkstad" />
-            <div className={styles.imgOverlay} />
-            <div className={styles.imgBadge}>
-              <div className={styles.badgeNum}>2009</div>
-              <div className={styles.badgeSub}>{tr.badgeSub}</div>
-            </div>
-          </div>
+
+        <div className="timeline" data-reveal data-anim>
+          <h3 className="tl-title"><span>{a.timelineTitle}</span></h3>
+          <ol>
+            <span className="weld" aria-hidden="true"><i /></span>
+            {a.timeline.map(([year, title, text], i) => (
+              <li key={year} style={{ ["--i" as string]: i }}>
+                <span className="tl-year">{year}</span>
+                <div>
+                  <strong>{title}</strong>
+                  <p>{text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
-      <div className={styles.uspGrid}>
-        {tr.usps.map((u, i) => (
-          <div key={u.label} className={styles.usp} data-reveal="scale" style={{ ["--reveal-delay" as string]: `${i * 0.08}s` }}>
-            <div className={styles.uspIcon}>{uspIcons[i]}</div>
-            <div><div className={styles.uspLabel}>{u.label}</div><div className={styles.uspDesc}>{u.desc}</div></div>
-          </div>
-        ))}
+
+      <div className="wrap">
+        <ul className="usps">
+          {a.usps.map((u, i) => (
+            <li key={u.label} data-reveal style={{ ["--i" as string]: i }}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[i]}</svg>
+              <strong>{u.label}</strong>
+              <p>{u.desc}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

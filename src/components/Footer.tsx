@@ -1,32 +1,55 @@
 "use client";
+import { useState } from "react";
 import { useLang } from "@/lib/LangContext";
-import { t } from "@/lib/translations";
-import styles from "./Footer.module.css";
+import Emblem from "./Emblem";
+import Wordmark from "./Wordmark";
 
 export default function Footer() {
-  const { lang } = useLang();
-  const tr = t[lang].footer;
+  const { tr } = useLang();
+  const f = tr.footer;
+  const [done, setDone] = useState(false);
+  const [mail, setMail] = useState("");
+
   return (
-    <footer className={styles.footer}>
-      <div className={`${styles.top} fade-in`}>
-        <div className={styles.brand}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-dark.png" alt="Stålco" className={styles.logo} />
-          <p className={styles.desc}>{tr.desc}</p>
-          <div className={styles.newsletter}>
-            <input type="email" className={styles.input} placeholder={tr.placeholder} />
-            <button className={styles.subBtn}>{tr.subBtn}</button>
+    <footer className="footer" data-anim>
+      <div className="wrap">
+        <div className="foot-top">
+          <div className="foot-brand">
+            <a href="#top" className="brand" aria-label="Stålco"><Emblem id="foot" className="brand-em" /><Wordmark /></a>
+            <p>{f.desc}</p>
           </div>
-          <div className={styles.orgnr}>{tr.orgnr}</div>
+          <form className="news" onSubmit={(e) => { e.preventDefault(); if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) setDone(true); }}>
+            <label htmlFor="news">{f.newsTitle}</label>
+            {done ? (
+              <p className="news-done">{f.subDone}</p>
+            ) : (
+              <div>
+                <input id="news" type="email" placeholder={f.placeholder} value={mail} onChange={(e) => setMail(e.target.value)} />
+                <button className="btn btn-hot">{f.subBtn}</button>
+              </div>
+            )}
+          </form>
         </div>
-        <div><div className={styles.colTitle}>{tr.col1}</div><ul className={styles.links}>{tr.shop.map(l => <li key={l}><a href="#">{l}</a></li>)}</ul></div>
-        <div><div className={styles.colTitle}>{tr.col2}</div><ul className={styles.links}>{tr.help.map(l => <li key={l}><a href="#">{l}</a></li>)}</ul></div>
-        <div><div className={styles.colTitle}>{tr.col3}</div><ul className={styles.links}>{tr.company.map(l => <li key={l}><a href="#">{l}</a></li>)}</ul></div>
+
+        <div className="foot-cols">
+          {[[f.col1, f.shop], [f.col2, f.help], [f.col3, f.company]].map(([title, links]) => (
+            <div key={title as string}>
+              <h4>{title as string}</h4>
+              <ul>{(links as string[]).map((l) => <li key={l}><a href="#sortiment">{l}</a></li>)}</ul>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className={styles.bottom}>
-        <div className={styles.copy}>{tr.copy}</div>
-        <div className={styles.trust}><span>🔒 SSL</span><span>✓ Klarna</span><span>✓ Swish</span><span>✓ Faktura</span></div>
-        <div className={styles.socials}>{["in","ig","yt","x"].map(s => <a key={s} href="#" className={styles.social}>{s}</a>)}</div>
+
+      <div className="giant" aria-hidden="true">STÅLCO</div>
+
+      <div className="wrap foot-bottom">
+        <span>{f.copy}</span>
+        <span>{f.orgnr}</span>
+        <a href="#top" className="to-top">{f.top} ↑</a>
+        <a href="https://www.swegbg.com" target="_blank" rel="noopener" className="credit">
+          {f.credit} <b>SweGBG</b>
+        </a>
       </div>
     </footer>
   );
