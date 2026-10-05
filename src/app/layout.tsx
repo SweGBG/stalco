@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/archivo/wdth.css";
 import "@fontsource-variable/manrope";
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LangProvider>
           <QuoteProvider>{children}</QuoteProvider>
         </LangProvider>
+        <Analytics />
       </body>
     </html>
   );
