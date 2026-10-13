@@ -41,7 +41,26 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="giant" aria-hidden="true">STÅLCO</div>
+      {/* Stor kontur-logga med guldsvep. SVG (clipPath + transform) i stället för
+          background-clip: text — det senare animeras inte pålitligt i mobil Safari/Chrome. */}
+      <svg className="giant" viewBox="0 0 1000 230" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <clipPath id="giant-clip">
+            <text x="500" y="214" textAnchor="middle" textLength="980" lengthAdjust="spacingAndGlyphs" className="giant-txt">STÅLCO</text>
+          </clipPath>
+          <linearGradient id="giant-gold" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#ff8c1e" stopOpacity="0" />
+            <stop offset=".35" stopColor="#ff9a2a" stopOpacity=".35" />
+            <stop offset=".5" stopColor="#ffd27a" stopOpacity=".75" />
+            <stop offset=".65" stopColor="#ff9a2a" stopOpacity=".35" />
+            <stop offset="1" stopColor="#ff8c1e" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <g clipPath="url(#giant-clip)">
+          <rect className="giant-sweep" x="-420" y="0" width="360" height="230" fill="url(#giant-gold)" />
+        </g>
+        <text x="500" y="214" textAnchor="middle" textLength="980" lengthAdjust="spacingAndGlyphs" className="giant-txt giant-stroke">STÅLCO</text>
+      </svg>
 
       <div className="wrap foot-bottom">
         <span>{f.copy}</span>

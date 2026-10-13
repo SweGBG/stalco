@@ -6,12 +6,13 @@ import CountUp from "./CountUp";
 
 // Gnistor vid hammarslaget + glöd som stiger i bakgrunden. Seedat = samma på server/klient.
 const r1 = rng(2009);
-const SPARKS = Array.from({ length: 22 }, () => ({
-  a: -170 + r1() * 160, // mest uppåt/åt sidan
-  d: 40 + r1() * 90,
-  l: 6 + r1() * 14,
-  w: 1 + r1() * 1.6,
-  t: r1() * 0.12,
+const SPARKS = Array.from({ length: 16 }, () => ({
+  a: -165 + r1() * 150, // utkast uppåt/åt sidorna
+  d: 28 + r1() * 62,    // hur långt gnistan flyger
+  g: 18 + r1() * 40,    // hur mycket den faller (gravitation)
+  l: 6 + r1() * 7,
+  w: 1 + r1() * 1,
+  t: r1() * 0.1,
 }));
 const r2 = rng(62);
 const EMBERS = Array.from({ length: 18 }, () => ({
@@ -82,16 +83,30 @@ export default function Hero() {
 
             <Emblem id="hero" className="hero-em" x={80} y={70} width={240} height={240} />
 
-            {/* slag: chockvåg + gnistor (intro + loop) */}
+            {/* slag: varm glöd + gnistor som kastas ut och faller (intro + loop) */}
+            <defs>
+              <radialGradient id="hit-glow">
+                <stop offset="0" stopColor="#fff6dc" stopOpacity=".95" />
+                <stop offset=".35" stopColor="#ffc457" stopOpacity=".55" />
+                <stop offset="1" stopColor="#ff8a1e" stopOpacity="0" />
+              </radialGradient>
+              <linearGradient id="spark-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="10" y2="0">
+                <stop offset="0" stopColor="#ff7a12" stopOpacity="0" />
+                <stop offset=".55" stopColor="#ffb547" />
+                <stop offset="1" stopColor="#fff4cf" />
+              </linearGradient>
+            </defs>
             {["intro", "loop"].map((k) => (
               <g key={k} className={`impact impact-${k}`}>
-                <circle cx={IX} cy={IY} r="26" className="shock" />
-                <circle cx={IX} cy={IY} r="9" className="flash" />
+                <circle cx={IX} cy={IY} r="18" className="shock" />
+                <circle cx={IX} cy={IY} r="16" className="flash" fill="url(#hit-glow)" />
                 <g transform={`translate(${IX} ${IY})`}>
                   {SPARKS.map((s, i) => (
-                    <g key={i} transform={`rotate(${s.a.toFixed(1)})`}>
-                      <line x1="0" y1="0" x2={s.l.toFixed(1)} y2="0" className="spark"
-                        style={{ strokeWidth: s.w, ["--d" as string]: `${s.d.toFixed(0)}px`, ["--t" as string]: `${s.t.toFixed(2)}s` }} />
+                    <g key={i} className="sp-fall" style={{ ["--g" as string]: `${s.g.toFixed(0)}px`, ["--t" as string]: `${s.t.toFixed(2)}s` }}>
+                      <g transform={`rotate(${s.a.toFixed(1)})`}>
+                        <line x1="0" y1="0" x2={s.l.toFixed(1)} y2="0" className="spark"
+                          style={{ strokeWidth: s.w, ["--d" as string]: `${s.d.toFixed(0)}px` }} />
+                      </g>
                     </g>
                   ))}
                 </g>
