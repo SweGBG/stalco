@@ -313,15 +313,23 @@ p { margin: 0; }
 .tg-hit { fill: transparent; }
 .tg-spin { transform-box: fill-box; transform-origin: center; animation: spinDir var(--dur) linear infinite; }
 @keyframes spinDir { to { transform: rotate(calc(360deg * var(--dir))); } }
-.tg-body { fill: url(#g-steel); stroke: #0b1520; stroke-width: 2; transition: fill .4s, filter .4s; }
-.tg-hole { fill: var(--night); }
+.tg-img { transition: opacity .5s, filter .4s; }
+.tg-hotimg { opacity: 0; }
+.tg-sheen { mix-blend-mode: soft-light; pointer-events: none; }
+.mesh { pointer-events: none; }
+.mesh-glow { mix-blend-mode: screen; transform-box: fill-box; transform-origin: center; animation: meshGlow 2.6s var(--d) ease-in-out infinite; }
+@keyframes meshGlow { 0%, 100% { opacity: .5; transform: scale(.85); } 35% { opacity: .8; transform: scale(1); } 55% { opacity: .58; } 70% { opacity: .88; transform: scale(1.06); } }
+.mesh-spark { fill: #ffe2a3; opacity: 0; animation: meshSpark 3.4s calc(var(--d) + .4s) ease-out infinite; }
+.mesh-spark.s2 { animation-duration: 4.6s; animation-delay: calc(var(--d) + 1.9s); }
+@keyframes meshSpark { 0%, 82% { opacity: 0; transform: translate(0, 0); } 84% { opacity: 1; } 100% { opacity: 0; transform: translate(6px, 14px); } }
 .tg-axle { fill: var(--s9); stroke: var(--s3); stroke-width: 2; transition: stroke .4s; }
 .tg-label { font: 700 13px var(--display); font-stretch: 112%; letter-spacing: .05em; text-transform: uppercase; fill: var(--s3); transition: fill .3s; }
 .tg-count { font: 500 11px var(--mono); fill: var(--muted); letter-spacing: .1em; }
-.tg:hover .tg-body { filter: brightness(1.35); }
+.tg:hover .tg-img { filter: brightness(1.25); }
 .tg:hover .tg-label { fill: var(--fg); }
-.tg:focus-visible .tg-body { stroke: var(--hot); stroke-width: 3; }
-.tg.on .tg-body { fill: url(#g-hot); filter: drop-shadow(0 0 18px rgba(255, 140, 30, .55)); }
+.tg:focus-visible .tg-axle { stroke: var(--hot); stroke-width: 4; }
+.tg.on .tg-hotimg { opacity: 1; }
+.tg.on .tg-spin { filter: drop-shadow(0 0 16px rgba(255, 140, 30, .45)); }
 .tg.on .tg-axle { stroke: #fff6d8; }
 .tg.on .tg-label { fill: var(--hot2); }
 .tg.on .tg-count { fill: var(--hot); }

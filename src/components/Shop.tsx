@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import { useLang } from "@/lib/LangContext";
 import { useQuote } from "@/lib/QuoteContext";
 import { products, fmt } from "@/lib/products";
-import { gearPath } from "@/lib/gear";
 
 // ── Kugghjulsdrevet ──────────────────────────────────────────────
 // Riktiga ingrepp: samma modul (kuggdelning) för alla hjul, radie = m·z/2,
@@ -45,6 +44,12 @@ function buildTrain() {
   return { gears, vb };
 }
 const TRAIN = buildTrain();
+// Ingreppspunkter mellan grannhjul (på delningscirkeln) — där glöden sitter.
+const MESH = TRAIN.gears.slice(1).map((g, i) => {
+  const p = TRAIN.gears[i];
+  const k = p.r / (p.r + g.r);
+  return { x: p.x + (g.x - p.x) * k, y: p.y + (g.y - p.y) * k, d: (i * 1.37) % 3 };
+});
 
 export default function Shop() {
   const { tr } = useLang();
@@ -74,12 +79,15 @@ export default function Shop() {
         <div className="train" data-anim data-reveal>
           <svg viewBox={[TRAIN.vb.x, TRAIN.vb.y, TRAIN.vb.w, TRAIN.vb.h].map((v) => v.toFixed(2)).join(" ")} role="group" aria-label={tr.train.title}>
             <defs>
-              <linearGradient id="g-steel" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#4d6c8f" /><stop offset="1" stopColor="#22374f" />
-              </linearGradient>
-              <linearGradient id="g-hot" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#ffc457" /><stop offset="1" stopColor="#e2830f" />
-              </linearGradient>
+              <radialGradient id="mesh-glow">
+                <stop offset="0" stopColor="#fff1c9" stopOpacity=".9" />
+                <stop offset=".25" stopColor="#ffb547" stopOpacity=".55" />
+                <stop offset="1" stopColor="#ff7a12" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="tg-sheen" cx=".32" cy=".28" r=".75">
+                <stop offset="0" stopColor="#fff" stopOpacity=".22" />
+                <stop offset=".6" stopColor="#fff" stopOpacity="0" />
+              </radialGradient>
             </defs>
             {TRAIN.gears.map((g, i) => {
               const active = cat === i;
@@ -99,21 +107,28 @@ export default function Shop() {
                   <circle r={(g.r + 16).toFixed(2)} className="tg-hit" />
                   <g transform={`rotate(${g.off.toFixed(2)})`}>
                     <g className="tg-spin" style={{ ["--dur" as string]: `${(g.z * SEC_PER_TOOTH).toFixed(2)}s`, ["--dir" as string]: g.dir }}>
-                      <path d={gearPath(g.z, g.r, M * 2.1, +(g.r * 0.32).toFixed(2))} className="tg-body" fillRule="evenodd" />
-                      {(() => {
-                        const nh = g.z > 12 ? 6 : 4;
-                        return Array.from({ length: nh }, (_, k) => (
-                          <circle key={k} r={(g.r * 0.09).toFixed(2)} cx={(Math.cos((k / nh) * Math.PI * 2) * g.r * 0.6).toFixed(2)} cy={(Math.sin((k / nh) * Math.PI * 2) * g.r * 0.6).toFixed(2)} className="tg-hole" />
-                        ));
-                      })()}
+                      <image href={`/train/gear-${g.z}-steel.webp`} x={(-(g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} y={(-(g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} width={(2 * (g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} height={(2 * (g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} className="tg-img" />
+                      <image href={`/train/gear-${g.z}-hot.webp`} x={(-(g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} y={(-(g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} width={(2 * (g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} height={(2 * (g.r + M * 2.1 * 0.45 + 3)).toFixed(2)} className="tg-img tg-hotimg" />
                     </g>
                   </g>
+                  {/* fast ljus (snurrar inte med) så metallen ser belyst ut */}
+                  <circle r={(g.r + M * 0.945).toFixed(2)} className="tg-sheen" fill="url(#tg-sheen)" />
                   <circle r={(g.r * 0.2).toFixed(2)} className="tg-axle" />
                   <text y={(g.up ? -g.r - 24 : g.r + 34).toFixed(2)} textAnchor="middle" className="tg-label">{label}</text>
                   <text y={(g.up ? -g.r - 10 : g.r + 50).toFixed(2)} textAnchor="middle" className="tg-count">{counts[i]}</text>
                 </g>
               );
             })}
+            {/* friktionsglöd där kuggarna griper i varandra */}
+            <g className="mesh" aria-hidden="true">
+              {MESH.map((m, i) => (
+                <g key={i} transform={`translate(${m.x.toFixed(2)} ${m.y.toFixed(2)})`} style={{ ["--d" as string]: `${m.d.toFixed(2)}s` }}>
+                  <circle r="16" className="mesh-glow" fill="url(#mesh-glow)" />
+                  <circle r="1.2" cx="-3" className="mesh-spark" />
+                  <circle r="0.9" cx="3" className="mesh-spark s2" />
+                </g>
+              ))}
+            </g>
           </svg>
           <div className="train-pills" role="group" aria-label={tr.train.title}>
             {p.cats.map((c, i) => (
