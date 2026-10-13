@@ -33,7 +33,8 @@ export default function Hero() {
   useEffect(() => {
     const v = filmRef.current;
     if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    v.src = v.dataset.src!;
+    const mp4 = v.canPlayType('video/mp4; codecs="avc1.42E01E"');
+    v.src = mp4 ? "/film/stalco-slag.mp4" : "/film/stalco-slag.webm";
     const on = () => setFilm(true);
     v.addEventListener("playing", on);
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); });
@@ -128,7 +129,7 @@ export default function Hero() {
               </g>
             ))}
           </svg>
-          <video ref={filmRef} className="hero-film" data-src="/film/stalco-slag.mp4" muted loop playsInline preload="none" aria-hidden="true" />
+          <video ref={filmRef} className="hero-film" muted loop playsInline preload="none" aria-hidden="true" />
           <div className="plate">
             <span>{h.plate}</span>
             <span>STÅLCO AB · 1:1</span>

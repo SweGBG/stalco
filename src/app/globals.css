@@ -211,8 +211,7 @@ p { margin: 0; }
 
 .hero-stage { position: relative; }
 /* H3-filmen: svart = genomskinligt via screen. Tonar in över emblemet när den spelar. */
-.hero-film { position: absolute; left: var(--fx, 6%); top: var(--fy, 4%); width: var(--fw, 78%); aspect-ratio: 1; mix-blend-mode: screen; opacity: 0; pointer-events: none; transition: opacity .8s var(--ease);
-  -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent 100%); mask-image: radial-gradient(closest-side, #000 82%, transparent 100%); }
+.hero-film { position: absolute; left: 11%; top: -5%; width: 80%; aspect-ratio: 1; mix-blend-mode: screen; opacity: 0; pointer-events: none; transition: opacity .8s var(--ease); }
 .hero-stage.has-film .hero-film { opacity: 1; }
 .hero-stage .hero-em, .hero-stage .impact { transition: opacity .8s var(--ease); }
 .hero-stage.has-film .hero-em, .hero-stage.has-film .impact { opacity: 0; }
