@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/lib/LangContext";
 import { rng } from "@/lib/rng";
 import Emblem from "./Emblem";
@@ -21,26 +20,11 @@ const EMBERS = Array.from({ length: 18 }, () => ({
 }));
 
 // Slagpunkt i scenens koordinater (hammarens slagyta mot kugghjulet)
-const IX = 262, IY = 150;
+const IX = 250, IY = 141;
 
 export default function Hero() {
   const { tr } = useLang();
   const h = tr.hero;
-  // H3-film av slaget (svart bakgrund → screen-blend). Emblemet ligger kvar under
-  // tills filmen faktiskt spelar, och används ensamt vid reducerad rörelse.
-  const filmRef = useRef<HTMLVideoElement>(null);
-  const [film, setFilm] = useState(false);
-  useEffect(() => {
-    const v = filmRef.current;
-    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const mp4 = v.canPlayType('video/mp4; codecs="avc1.42E01E"');
-    v.src = mp4 ? "/film/stalco-slag.mp4" : "/film/stalco-slag.webm";
-    const on = () => setFilm(true);
-    v.addEventListener("playing", on);
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); });
-    io.observe(v);
-    return () => { io.disconnect(); v.removeEventListener("playing", on); };
-  }, []);
   let n = 0;
 
   return (
@@ -83,7 +67,7 @@ export default function Hero() {
           </dl>
         </div>
 
-        <div className={`hero-stage${film ? " has-film" : ""}`}>
+        <div className="hero-stage">
           <svg viewBox="0 0 440 420" className="stage-svg" aria-hidden="true">
             {/* konstruktionslinjer */}
             <g className="bp">
@@ -129,7 +113,6 @@ export default function Hero() {
               </g>
             ))}
           </svg>
-          <video ref={filmRef} className="hero-film" muted loop playsInline preload="none" aria-hidden="true" />
           <div className="plate">
             <span>{h.plate}</span>
             <span>STÅLCO AB · 1:1</span>
